@@ -20,7 +20,17 @@ import com.memetix.chits4j.agent.AgentService;
 import com.memetix.chits4j.chit.Chit;
 import com.memetix.chits4j.metric.Metric;
 import com.memetix.chits4j.metric.MetricService;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.net.URL;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
 
 /**
  * A Swing client for testing the Chits API
@@ -31,11 +41,13 @@ import javax.swing.JOptionPane;
 public class Chit4jGraphicalClient extends javax.swing.JFrame {
     AgentService aService = new AgentService();
     MetricService mService = new MetricService();
+    DefaultListModel chitListModel = new DefaultListModel();
 
     /** Creates new form Chit4jGraphicalClient */
     public Chit4jGraphicalClient() {
         initComponents();
-        
+        setFont(new java.awt.Font("Arial Unicode MS", 0, 14));
+        chitList.setCellRenderer(new ChitRenderer());
     }
 
     /** This method is called from within the constructor to
@@ -61,9 +73,13 @@ public class Chit4jGraphicalClient extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         chitList = new javax.swing.JList();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Chits API for Acheivements - Java Test Client");
 
+        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         jLabel1.setText("Name");
@@ -93,8 +109,10 @@ public class Chit4jGraphicalClient extends javax.swing.JFrame {
 
         statusText.setColumns(20);
         statusText.setRows(5);
+        statusText.setBorder(javax.swing.BorderFactory.createTitledBorder("Message Log"));
         jScrollPane1.setViewportView(statusText);
 
+        jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
 
         jLabel3.setText("Agent");
@@ -112,23 +130,50 @@ public class Chit4jGraphicalClient extends javax.swing.JFrame {
         });
         jToolBar2.add(jButton1);
 
-        chitList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        chitList.setBackground(new java.awt.Color(204, 204, 204));
+        chitList.setBorder(javax.swing.BorderFactory.createTitledBorder("Chits"));
+        chitList.setModel(chitListModel);
         jScrollPane2.setViewportView(chitList);
+
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setIcon(new javax.swing.JLabel() {
+            public javax.swing.Icon getIcon() {
+                try {
+                    return new javax.swing.ImageIcon(
+                        new java.net.URL("http://chitsapi.com/static/images/logos/small_logo.png")
+                    );
+                } catch (java.net.MalformedURLException e) {
+                }
+                return null;
+            }
+        }.getIcon());
+
+        jLabel5.setIcon(new javax.swing.JLabel() {
+            public javax.swing.Icon getIcon() {
+                try {
+                    return new javax.swing.ImageIcon(
+                        new java.net.URL("http://chitsapi.com/static/images/badge.png")
+                    );
+                } catch (java.net.MalformedURLException e) {
+                }
+                return null;
+            }
+        }.getIcon());
+        jLabel5.setText("Chits API © 2011 - Memetix Inc.");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jToolBar2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
-            .add(jToolBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
                 .addContainerGap())
+            .add(jToolBar2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+            .add(jLabel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+            .add(jLabel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+            .add(jToolBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
@@ -137,13 +182,17 @@ public class Chit4jGraphicalClient extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(jToolBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jToolBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(25, 25, 25)
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 140, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 322, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jToolBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(jToolBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jLabel5))
         );
 
         pack();
@@ -175,8 +224,8 @@ public class Chit4jGraphicalClient extends javax.swing.JFrame {
             metric.setAgent(agentName.getText());
             metric.setName(metricName.getText());
             metric.setValue(metricValue.getText());
-        
             statusText.append(mService.writeMetric(metric).encodeAsJSON().toString() + "\n");
+            refreshAgent();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Performing Localization : " + ex.toString(),"Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -185,11 +234,48 @@ public class Chit4jGraphicalClient extends javax.swing.JFrame {
     private void refreshAgent() {
         try {
             final Agent agent = aService.getAgent(agentName.getText());
+            chitListModel.removeAllElements();
             for(Chit chit : agent.getChits()) {
-                statusText.append(chit.getName() + "\n");
+                if(!chitListModel.contains(chit)) {
+                    chitListModel.add(0,chit);
+                }
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Performing Localization : " + ex.toString(),"Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    class ChitRenderer extends JLabel
+                       implements ListCellRenderer {
+        public ChitRenderer() {
+            setOpaque(true);
+            setHorizontalAlignment(LEFT);
+            setVerticalAlignment(CENTER);
+            this.setBorder(BorderFactory.createEtchedBorder());
+        }
+
+   
+        public Component getListCellRendererComponent(
+                                           JList list,
+                                           Object value,
+                                           int index,
+                                           boolean isSelected,
+                                           boolean cellHasFocus) {
+            
+            //Set the icon and text.  If icon was null, say so.
+            try {
+                final String imageUrl = ((Chit)value).getImageUrl();
+                final URL url = new URL(imageUrl!=null ? imageUrl : "http://chitsapi.com/static/images/chit/chit.png");
+                final ImageIcon icon = new ImageIcon(url, ((Chit)value).getName());
+                setIcon(icon);
+            } catch(Exception ex) {
+                
+            }
+            final String chitName = "<HTML><b>" + ((Chit)value).getName() + "</b><BR/><i>" + ((Chit)value).getDescription() + "</i></HTML>";
+            setText(chitName);
+            setFont(list.getFont());
+
+            return this;
         }
     }
     /**
@@ -210,6 +296,8 @@ public class Chit4jGraphicalClient extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
